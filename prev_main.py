@@ -1,7 +1,18 @@
+import os
+import sys
 import Card 
 import Chapter
 import Course
 import json
+import sys
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.uic import loadUi
+
+class testQTMain(QtWidgets.QMainWindow):
+    def __init__(self):
+        super(testQTMain, self).__init__()
+        loadUi('mainwindow.ui', self)
+        # call __init__(self) of the custom base class here
 
 def getUserData(database, userName):
     data = {}
@@ -34,4 +45,7 @@ if __name__ == '__main__' :
                                             'data' : {}}) 
             userExists = True
     
-    print(database)
+    app = QtWidgets.QApplication(sys.argv)
+    window = testQTMain()
+    window.show()
+    sys.exit(app.exec_())
