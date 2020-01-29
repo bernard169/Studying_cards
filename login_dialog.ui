@@ -351,8 +351,8 @@ selection-background-color: darkgray; }</string>
    </property>
    <property name="font">
     <font>
-     <family>MV Boli</family>
-     <pointsize>13</pointsize>
+     <family>Comic Sans MS</family>
+     <pointsize>12</pointsize>
     </font>
    </property>
    <property name="text">
@@ -370,7 +370,7 @@ selection-background-color: darkgray; }</string>
    </property>
    <property name="font">
     <font>
-     <family>Segoe UI</family>
+     <family>Comic Sans MS</family>
      <pointsize>9</pointsize>
     </font>
    </property>
@@ -397,7 +397,7 @@ selection-background-color: darkgray; }</string>
    </property>
    <property name="font">
     <font>
-     <family>Segoe UI</family>
+     <family>Comic Sans MS</family>
      <pointsize>9</pointsize>
     </font>
    </property>

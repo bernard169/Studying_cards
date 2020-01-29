@@ -2,8 +2,9 @@
 import os
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
-import mylogin_dialog as login
+import myLogin_dialog as login
 import myWarning_usr as warningUser
+import myExplorer as explorer
 import Card 
 import Chapter
 import Course
@@ -66,5 +67,15 @@ if __name__ == "__main__":
             del Dialog
             del ui
             data, userExists = getUserData(database, userName)
-    print(data)
-    print(userExists)
+    app = QtWidgets.QApplication(sys.argv)
+    Dialog = QtWidgets.QDialog()
+    ui = explorer.MyExplorer()
+    ui.setupUi(Dialog, data)
+    Dialog.show()
+    app.exec_()
+    action = ui.getAction()
+    del app 
+    del Dialog
+    del ui
+
+    
