@@ -139,6 +139,10 @@ class Ui_Dialog(object):
         self.label_userName.setObjectName("label_userName")
         self.okButton = QtWidgets.QPushButton(Dialog)
         self.okButton.setGeometry(QtCore.QRect(200, 300, 80, 25))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(9)
+        self.okButton.setFont(font)
         self.okButton.setStyleSheet("QPushButton{\n"
 "background-color:rgb(197, 198, 255);\n"
 "border: 1px solid blue; \n"
@@ -148,6 +152,10 @@ class Ui_Dialog(object):
         self.okButton.setObjectName("okButton")
         self.cancelButton = QtWidgets.QPushButton(Dialog)
         self.cancelButton.setGeometry(QtCore.QRect(320, 300, 80, 25))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(9)
+        self.cancelButton.setFont(font)
         self.cancelButton.setStyleSheet("QPushButton{\n"
 "background-color:rgb(197, 198, 255);\n"
 "border: 1px solid blue; \n"
@@ -165,6 +173,7 @@ class Ui_Dialog(object):
         self.label_userName.setText(_translate("Dialog", "Veuillez entrer votre nom d\'utilisateur :"))
         self.okButton.setText(_translate("Dialog", "OK"))
         self.cancelButton.setText(_translate("Dialog", "Cancel"))
+
 
 if __name__ == "__main__":
     import sys

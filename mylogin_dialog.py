@@ -6,23 +6,22 @@ import login_dialog as login
 class MyLoginDialog(login.Ui_Dialog):
     def setupUi(self, Dialog):
         self.userName = ""
+        self.dialog = Dialog
         super().setupUi(Dialog)
-
-#Begin functionalities here
-        self.okButton.clicked.connect(self.okButtonClicked)
+        #Begin functionalities here
+        self.okButton.clicked.connect(self.validate)
         #self.userNameInput.enterEvent.connect(self.setUserName)
-        self.cancelButton.clicked.connect  (self.cancelButtonClicked)
+        self.cancelButton.clicked.connect  (self.cancel)
 
     def setUserName(self):
         self.userName = self.userNameInput.text()
-        print(self.userName)
 
-    def okButtonClicked(self):
+    def validate(self):
         self.setUserName()
-        sys.exit()
+        self.dialog.accept()
 
-    def cancelButtonClicked(self):
-        sys.exit()
+    def cancel(self):
+        self.dialog.reject()
 
     def getUserName(self):
         return self.userName

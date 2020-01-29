@@ -368,6 +368,12 @@ selection-background-color: darkgray; }</string>
      <height>25</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Segoe UI</family>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
    <property name="styleSheet">
     <string notr="true">QPushButton{
 background-color:rgb(197, 198, 255);
@@ -388,6 +394,12 @@ selection-background-color: darkgray; }</string>
      <width>80</width>
      <height>25</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Segoe UI</family>
+     <pointsize>9</pointsize>
+    </font>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton{

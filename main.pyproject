@@ -1,3 +1,3 @@
 {
-    "files": ["main.py","mainwindow.ui","login_dialog.ui"]
+    "files": ["main.py","warning_username.ui","login_dialog.ui","mainwindow.ui","imagesRessources.qrc"]
 }
