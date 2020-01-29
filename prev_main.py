@@ -8,9 +8,9 @@ import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.uic import loadUi
 
-class testQTMain(QtWidgets.QMainWindow):
+class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
-        super(testQTMain, self).__init__()
+        super(MainWindow, self).__init__()
         loadUi('mainwindow.ui', self)
         # call __init__(self) of the custom base class here
 
@@ -46,6 +46,6 @@ if __name__ == '__main__' :
             userExists = True
     
     app = QtWidgets.QApplication(sys.argv)
-    window = testQTMain()
+    window = MainWindow()
     window.show()
     sys.exit(app.exec_())
