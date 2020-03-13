@@ -354,6 +354,7 @@ class MyPreviewCards(Ui_previewCardsDialog):
             cursorQ.movePosition(QtGui.QTextCursor.NextCharacter, mode=QtGui.QTextCursor.KeepAnchor) 
             totalCharacterFormat = QtGui.QTextCharFormat()
             font = self.displayQuestion.currentFont()
+            color = QtGui.QColor()
             fmtCaracter = self.__formatQ[i]
             for fmt in fmtCaracter :
                 if fmt is 'b':
@@ -364,7 +365,13 @@ class MyPreviewCards(Ui_previewCardsDialog):
                     font.setItalic(True)
                 elif fmt is 's':
                     font.setStrikeOut(True)
+                elif fmt is 'r':
+                    color.setNamedColor("red")
+                elif fmt is 'g':
+                    color.setNamedColor("green")
+            brush = QtGui.QBrush(color)
             totalCharacterFormat.setFont(font)
+            totalCharacterFormat.setForeground(brush)
             cursorQ.setCharFormat(totalCharacterFormat)
             cursorQ.movePosition(QtGui.QTextCursor.NextCharacter) #reset anchor to get a single character at each iteration
             i += 1
@@ -376,6 +383,7 @@ class MyPreviewCards(Ui_previewCardsDialog):
             totalCharacterFormat = QtGui.QTextCharFormat()
             font = self.displayAnswer.currentFont()
             fmtCaracter = self.__formatA[i]
+            color = QtGui.QColor()
             for fmt in fmtCaracter :
                 if fmt is 'b':
                     font.setBold(True)
@@ -385,7 +393,13 @@ class MyPreviewCards(Ui_previewCardsDialog):
                     font.setItalic(True)
                 elif fmt is 's':
                     font.setStrikeOut(True)
+                elif fmt is 'r':
+                    color.setNamedColor("red")
+                elif fmt is 'g':
+                    color.setNamedColor("green")
+            brush = QtGui.QBrush(color)
             totalCharacterFormat.setFont(font)
+            totalCharacterFormat.setForeground(brush)
             cursorA.setCharFormat(totalCharacterFormat)
             cursorA.movePosition(QtGui.QTextCursor.NextCharacter)
             i += 1
@@ -396,8 +410,7 @@ class MyPreviewCards(Ui_previewCardsDialog):
         cursor = textWidget.textCursor()#QtGui.QTextCursor()
         #self.questionInput.setTextCursor(cursor)
         font = textWidget.currentFont()
-        color = QtGui.QColor()
-        
+        color = textWidget.textColor()
         if index is 1 :
             font.setBold(True)
         elif index is 2:
@@ -407,35 +420,18 @@ class MyPreviewCards(Ui_previewCardsDialog):
         elif index is 4:
             font.setStrikeOut(True)
         elif index is 5 : 
-            color.setAlpha(0)
-            color.setRed(255)
-            color.setGreen(0)
-            color.setBlue(0)
-            textWidget.setTextColor(color)
+            color.setNamedColor("red")
         elif index is 6 : 
-            color.setAlpha(0)
-            color.setRed(0)
-            color.setGreen(255)
-            color.setBlue(0)
-            textWidget.setTextColor(color)
+            color.setNamedColor("green")
         elif index is 0 :
             color.setNamedColor("black")
             font.setBold(False)
             font.setUnderline(False)
             font.setItalic(False)
             font.setStrikeOut(False)
-            textWidget.setTextColor(color)
-
+        brush = QtGui.QBrush(color)
         fmt.setFont(font)
-        cursor.setCharFormat(fmt)
-        cursor.movePosition(QtGui.QTextCursor.EndOfBlock)
-        color.setNamedColor("black")
-        font.setBold(False)
-        font.setUnderline(False)
-        font.setItalic(False)
-        font.setStrikeOut(False)
-        textWidget.setTextColor(color)
-        fmt.setFont(font)
+        fmt.setForeground(brush)
         cursor.setCharFormat(fmt)
     
     def addFormat(self):
@@ -457,8 +453,11 @@ class MyPreviewCards(Ui_previewCardsDialog):
                 specialFormatsQ[i].append('s')
             if fmt.fontWeight() > 50:  #normal weight is 50, greater means bolded text
                 specialFormatsQ[i].append('b')
+            if self.displayQuestion.textColor().red() > 200:
+                specialFormatsQ[i].append('r')
+            if self.displayQuestion.textColor().green() > 120:
+                specialFormatsQ[i].append('g')
             i += 1 
-
         i = 0
         cursorA = self.displayAnswer.textCursor()
         cursorA.movePosition(QtGui.QTextCursor.Start)
@@ -476,6 +475,10 @@ class MyPreviewCards(Ui_previewCardsDialog):
                 specialFormatsA[i].append('s')
             if fmt.fontWeight() > 50:  #normal weight is 50, greater means bolded text
                 specialFormatsA[i].append('b')
+            if self.displayAnswer.textColor().red() > 200:
+                specialFormatsA[i].append('r')
+            if self.displayAnswer.textColor().green() > 120:
+                specialFormatsA[i].append('g')
             i += 1 
         data = None
         noFormatQ = False

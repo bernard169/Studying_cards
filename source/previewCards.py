@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'D:\Documents\Projets\Studying_cards\previewCards.ui'
+# Form implementation generated from reading ui file 'D:\Documents\Projets\Studying_cards\source\previewCards.ui'
 #
 # Created by: PyQt5 UI code generator 5.12.3
 #
@@ -226,7 +226,7 @@ class Ui_previewCardsDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.formatMenuQ.sizePolicy().hasHeightForWidth())
         self.formatMenuQ.setSizePolicy(sizePolicy)
-        self.formatMenuQ.setMaximumSize(QtCore.QSize(50, 16777215))
+        self.formatMenuQ.setMaximumSize(QtCore.QSize(70, 16777215))
         self.formatMenuQ.setObjectName("formatMenuQ")
         self.formatMenuQ.addItem("")
         self.formatMenuQ.setItemText(0, "")
@@ -261,7 +261,7 @@ class Ui_previewCardsDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.formatMenuA.sizePolicy().hasHeightForWidth())
         self.formatMenuA.setSizePolicy(sizePolicy)
-        self.formatMenuA.setMaximumSize(QtCore.QSize(50, 16777215))
+        self.formatMenuA.setMaximumSize(QtCore.QSize(70, 16777215))
         self.formatMenuA.setObjectName("formatMenuA")
         self.formatMenuA.addItem("")
         self.formatMenuA.setItemText(0, "")

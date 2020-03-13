@@ -79,6 +79,10 @@ class MyCreateQACard(Ui_createQACardDialog):
                 specialFormatsQ[i].append('s')
             if fmt.fontWeight() > 50:  #normal weight is 50, greater means bolded text
                 specialFormatsQ[i].append('b')
+            if self.questionInput.textColor().red() > 200:
+                specialFormatsQ[i].append('r')
+            if self.questionInput.textColor().green() > 120:
+                specialFormatsQ[i].append('g')
             i += 1 
 
         i = 0
@@ -98,6 +102,10 @@ class MyCreateQACard(Ui_createQACardDialog):
                 specialFormatsA[i].append('s')
             if fmt.fontWeight() > 50:  #normal weight is 50, greater means bolded text
                 specialFormatsA[i].append('b')
+            if self.answerInput.textColor().red() > 200:
+                specialFormatsA[i].append('r')
+            if self.answerInput.textColor().green() > 120:
+                specialFormatsA[i].append('g')
             i += 1 
         data = None
         noFormatQ = False
@@ -179,8 +187,7 @@ class MyCreateQACard(Ui_createQACardDialog):
         cursor = textWidget.textCursor()#QtGui.QTextCursor()
         #self.questionInput.setTextCursor(cursor)
         font = textWidget.currentFont()
-        color = QtGui.QColor()
-        
+        color = textWidget.textColor()
         if index is 1 :
             font.setBold(True)
         elif index is 2:
@@ -190,25 +197,16 @@ class MyCreateQACard(Ui_createQACardDialog):
         elif index is 4:
             font.setStrikeOut(True)
         elif index is 5 : 
-            color.setAlpha(0)
-            color.setRed(255)
-            color.setGreen(0)
-            color.setBlue(0)
-            textWidget.setTextColor(color)
+            color.setNamedColor("red")
         elif index is 6 : 
-            color.setAlpha(0)
-            color.setRed(0)
-            color.setGreen(255)
-            color.setBlue(0)
-            textWidget.setTextColor(color)
+            color.setNamedColor("green")
         elif index is 0 :
             color.setNamedColor("black")
             font.setBold(False)
             font.setUnderline(False)
             font.setItalic(False)
             font.setStrikeOut(False)
-            textWidget.setTextColor(color)
-
+        brush = QtGui.QBrush(color)
         fmt.setFont(font)
-        cursor.setCharFormat(fmt)
+        fmt.setForeground(brush)
         cursor.setCharFormat(fmt)
