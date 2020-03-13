@@ -8,9 +8,16 @@ class MyExplorer(explorer.Ui_Dialog):
         super().setupUi(Dialog)
         self.coursesView.setHeaderLabels(["Cours", "Nombre de cartes"])
         self.buildTree(dataTree)
+        self.studyButton.pressed.connect(lambda:self.buttonPressed(self.studyButton))
+        self.studyButton.released.connect(lambda:self.buttonReleased(self.studyButton))
         self.studyButton.clicked.connect(self.study)
+        self.loginButton.pressed.connect(lambda:self.buttonPressed(self.loginButton))
+        self.loginButton.released.connect(lambda:self.buttonReleased(self.loginButton))
         self.loginButton.clicked.connect(self.logout)
+        self.createButton.pressed.connect(lambda:self.buttonPressed(self.createButton))
+        self.createButton.released.connect(lambda:self.buttonReleased(self.createButton))
         self.createButton.clicked.connect(self.create)
+        self.coursesView.header().resizeSection(0, self.coursesView.width() * (2/3))
 
     def addItem (self, name, numberOfCards, parent=0):
         if not parent:
@@ -18,14 +25,15 @@ class MyExplorer(explorer.Ui_Dialog):
         return QtWidgets.QTreeWidgetItem(parent, [name, str(numberOfCards)])
 
     def buildTree(self, dataTree):
+        print(dataTree)
         for course in dataTree["courses"]:
             cardsInCourse = 0
             for chapter in course["contentCourse"]:
                 for card in chapter["contentChapter"]:
                     cardsInCourse += 1
             courseItem = self.addItem(course["name"], cardsInCourse)
-            cardsInChapter = 0
             for chapter in course["contentCourse"]:
+                cardsInChapter = 0
                 for card in chapter["contentChapter"]:
                     cardsInChapter += 1
                 self.addItem(chapter["name"], cardsInChapter, courseItem)      
@@ -44,6 +52,12 @@ class MyExplorer(explorer.Ui_Dialog):
     
     def getAction(self):
         return self.__action
+    
+    def buttonPressed(self, widget):
+        widget.resize(0.95 * widget.width(), 0.95 * widget.height())
+    
+    def buttonReleased(self, widget):
+        widget.resize((1/0.95) * widget.width(), (1/0.95) * widget.height())
 
 if __name__ == "__main__":
     import sys

@@ -279,7 +279,7 @@ selection-background-color: darkgray; }</string>
   <widget class="QLabel" name="label_userName">
    <property name="geometry">
     <rect>
-     <x>110</x>
+     <x>55</x>
      <y>100</y>
      <width>491</width>
      <height>71</height>
@@ -358,6 +358,9 @@ selection-background-color: darkgray; }</string>
    <property name="text">
     <string>Veuillez entrer votre nom d'utilisateur :</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
   <widget class="QPushButton" name="okButton">
    <property name="geometry">
@@ -380,7 +383,11 @@ background-color:rgb(197, 198, 255);
 border: 1px solid blue; 
 border-radius: 8px; 
 padding: 0 8px; 
-selection-background-color: darkgray; }</string>
+selection-background-color: darkgray; }
+
+QPushButton:Pressed{
+background:rgb(44, 47, 255);
+}</string>
    </property>
    <property name="text">
     <string>OK</string>
@@ -407,7 +414,11 @@ background-color:rgb(197, 198, 255);
 border: 1px solid blue; 
 border-radius: 8px; 
 padding: 0 8px; 
-selection-background-color: darkgray; }</string>
+selection-background-color: darkgray; }
+
+QPushButton:Pressed{
+background:rgb(44, 47, 255);
+}</string>
    </property>
    <property name="text">
     <string>Cancel</string>

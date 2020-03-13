@@ -111,7 +111,7 @@ class Ui_Dialog(object):
         self.userNameInput.setAlignment(QtCore.Qt.AlignCenter)
         self.userNameInput.setObjectName("userNameInput")
         self.label_userName = QtWidgets.QLabel(Dialog)
-        self.label_userName.setGeometry(QtCore.QRect(110, 100, 491, 71))
+        self.label_userName.setGeometry(QtCore.QRect(55, 100, 491, 71))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(5, 0, 34))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -136,6 +136,7 @@ class Ui_Dialog(object):
         font.setFamily("Comic Sans MS")
         font.setPointSize(12)
         self.label_userName.setFont(font)
+        self.label_userName.setAlignment(QtCore.Qt.AlignCenter)
         self.label_userName.setObjectName("label_userName")
         self.okButton = QtWidgets.QPushButton(Dialog)
         self.okButton.setGeometry(QtCore.QRect(200, 300, 80, 25))
@@ -148,7 +149,11 @@ class Ui_Dialog(object):
 "border: 1px solid blue; \n"
 "border-radius: 8px; \n"
 "padding: 0 8px; \n"
-"selection-background-color: darkgray; }")
+"selection-background-color: darkgray; }\n"
+"\n"
+"QPushButton:Pressed{\n"
+"background:rgb(44, 47, 255);\n"
+"}")
         self.okButton.setObjectName("okButton")
         self.cancelButton = QtWidgets.QPushButton(Dialog)
         self.cancelButton.setGeometry(QtCore.QRect(320, 300, 80, 25))
@@ -161,7 +166,11 @@ class Ui_Dialog(object):
 "border: 1px solid blue; \n"
 "border-radius: 8px; \n"
 "padding: 0 8px; \n"
-"selection-background-color: darkgray; }")
+"selection-background-color: darkgray; }\n"
+"\n"
+"QPushButton:Pressed{\n"
+"background:rgb(44, 47, 255);\n"
+"}")
         self.cancelButton.setObjectName("cancelButton")
 
         self.retranslateUi(Dialog)

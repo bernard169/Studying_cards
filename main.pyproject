@@ -1,3 +1,3 @@
 {
-    "files": ["main.py","warning_username.ui","login_dialog.ui","imagesRessources.qrc","explorer2.ui","mainwindow.ui","explorer.ui"]
+    "files": ["explorer.ui","main.py","login_dialog.ui","createQACard.ui","warning_username.ui","mainwindow.ui","imagesRessources.qrc","previewCards.ui","addStructuralItemDialog.ui","explorer2.ui","createMenu.ui","addCard.ui","dialog.ui","displayCard.ui"]
 }

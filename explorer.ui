@@ -18,7 +18,7 @@
     <normaloff>images/home.png</normaloff>images/home.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">QMainWindow{
+   <string notr="true">QDialog{
 background-color :qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 255, 255, 255), stop:0.905028 rgba(200, 190, 255, 255));} 
 </string>
   </property>
@@ -39,12 +39,17 @@ background-color :qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgb
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton{
-background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 0, 0, 180), stop:0.219101 rgba(193, 0, 0, 180), stop:0.41573 rgba(154, 0, 32, 180), stop:0.629213 rgba(120, 0, 0, 180), stop:0.803371 rgba(80, 0, 0, 180), stop:1 rgba(53, 0, 0, 180));
+background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 120, 120, 255), stop:0.217617 rgba(204, 96, 96, 255), stop:0.41573 rgba(184, 85, 85, 255), stop:0.623596 rgba(129, 61, 61, 255), stop:0.769663 rgba(108, 43, 43, 255), stop:1 rgba(80, 39, 39, 255));
 color:white;
 border: 1px solid gray; 
 border-radius: 8px; 
 padding: 0 8px; 
-selection-background-color: darkgray; }</string>
+selection-background-color: darkgray; }
+
+QPushButton:Pressed{
+background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(151, 71, 71, 255), stop:0.217617 rgba(138, 65, 65, 255), stop:0.41573 rgba(127, 58, 58, 255), stop:0.623596 rgba(102, 48, 48, 255), stop:0.769663 rgba(92, 37, 37, 255), stop:1 rgba(71, 34, 34, 255));
+}
+</string>
    </property>
    <property name="text">
     <string>  Log out</string>
@@ -78,12 +83,16 @@ selection-background-color: darkgray; }</string>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton{
-background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(0, 255, 0, 180), stop:0.219101 rgba(0, 195, 0, 180), stop:0.41573 rgba(0, 165, 32, 180), stop:0.629213 rgba(0, 135, 0, 180), stop:0.820225 rgba(0, 103, 0, 180), stop:1 rgba(0, 51, 0, 180));
+background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(120, 255, 170, 255), stop:0.217617 rgba(96, 204, 103, 255), stop:0.41573 rgba(94, 184, 85, 255), stop:0.623596 rgba(64, 129, 61, 255), stop:0.769663 rgba(43, 108, 44, 255), stop:1 rgba(39, 80, 41, 255));
 color:white;
 border: 1px solid gray; 
 border-radius: 8px; 
 padding: 0 8px; 
-selection-background-color: darkgray; }</string>
+selection-background-color: darkgray; }
+
+QPushButton:Pressed{
+background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(65, 138, 92, 255), stop:0.217617 rgba(60, 128, 64, 255), stop:0.41573 rgba(59, 115, 53, 255), stop:0.623596 rgba(44, 89, 42, 255), stop:0.769663 rgba(29, 75, 31, 255), stop:1 rgba(27, 55, 28, 255));
+}</string>
    </property>
    <property name="text">
     <string>  Créer</string>
@@ -117,12 +126,16 @@ selection-background-color: darkgray; }</string>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton{
-background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(94, 0, 255, 150), stop:0.219101 rgba(60, 0, 204, 150), stop:0.41573 rgba(48, 0, 184, 150), stop:0.623596 rgba(37, 0, 129, 150), stop:0.769663 rgba(28, 0, 108, 150), stop:1 rgba(10, 0, 80, 150));
+background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(185, 132, 255, 255), stop:0.212435 rgba(156, 105, 204, 255), stop:0.41573 rgba(157, 95, 184, 255), stop:0.623596 rgba(134, 67, 136, 255), stop:0.766839 rgba(118, 59, 125, 255), stop:1 rgba(104, 61, 99, 255));
 color:white;
 border: 1px solid gray; 
 border-radius: 8px; 
 padding: 0 8px; 
-selection-background-color: darkgray; }</string>
+selection-background-color: darkgray; }
+
+QPushButton:pressed{
+background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(104, 74, 143, 255), stop:0.212435 rgba(99, 67, 130, 255), stop:0.41573 rgba(97, 58, 114, 255), stop:0.621762 rgba(90, 47, 91, 255), stop:0.766839 rgba(87, 43, 92, 255), stop:1 rgba(68, 40, 65, 255));
+}</string>
    </property>
    <property name="text">
     <string>  Etudier</string>
@@ -156,6 +169,16 @@ selection-background-color: darkgray; }</string>
    <property name="styleSheet">
     <string notr="true">QTreeWidget{
 background-color: rgba(255, 255, 255, 0);
+border: 1px solid gray; 
+border-radius: 8px; 
+padding: 0 4px; 
+selection-background-color: darkgray;
+}
+QHeaderView::section {
+    background-color: rgba(255, 255, 255, 0);
+	border-radius: 8px; 
+    /*padding-left: 0 8px;*/
+    border: 1px solid transparent;
 }</string>
    </property>
    <column>
