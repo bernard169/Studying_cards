@@ -201,7 +201,7 @@ def preview(data, databaseFile, course, userName, database, chapter=None):
 
 if __name__ == "__main__":
     database = ""
-    databaseFile = 'data' + os.path.sep + 'data.json'
+    databaseFile = '..' + os.path.sep +'data' + os.path.sep + 'data.json'
     with open(databaseFile, 'r') as  json_file:
         database = json.load(json_file)
     totalPath =  os.path.abspath(os.getcwd()).split(os.path.sep)

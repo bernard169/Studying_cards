@@ -82,7 +82,6 @@ class MyPreviewCards(Ui_previewCardsDialog):
         self.formatMenuA.setVisible(False)
         self.formatMenuA.currentIndexChanged.connect(lambda:self.formatText(self.formatMenuA, self.displayAnswer))
 
-
     def getNumberOfQuestionsInChapter(self):
         count = 0
         for course in self.__data['courses']:
@@ -142,7 +141,6 @@ class MyPreviewCards(Ui_previewCardsDialog):
                     except IndexError:
                         print("no card here")
                     
-
     def getAction(self):
         return self.__action
 
@@ -166,7 +164,7 @@ class MyPreviewCards(Ui_previewCardsDialog):
         self.__question = self.displayQuestion.toPlainText()
         self.__answer = self.displayAnswer.toPlainText()
 
-        specialFormatsQ, specialFormatsA, noFormatQ, noFormatA = self.addFormat()
+        self.__formatQ, self.__formatA, noFormatQ, noFormatA = self.addFormat()
 
         data = None
         with open(self.__databaseFile, 'r') as  jsonFile:
@@ -179,8 +177,8 @@ class MyPreviewCards(Ui_previewCardsDialog):
                         course['contentCourse'][self.__indexChapter]['contentChapter'][self.__index]['contentCard']['Q'] = self.__question
                         course['contentCourse'][self.__indexChapter]['contentChapter'][self.__index]['contentCard']['A'] = self.__answer
                         if not (noFormatQ and noFormatA):
-                            course['contentCourse'][self.__indexChapter]['contentChapter'][self.__index]['format'] = {'Q' : specialFormatsQ,
-                             'A' : specialFormatsA}
+                            course['contentCourse'][self.__indexChapter]['contentChapter'][self.__index]['format'] = {'Q' : self.__formatQ,
+                             'A' : self.__formatA}
                 data = globalData['data']
         with open(self.__databaseFile, 'w') as reWriteFile:
             json.dump(db, reWriteFile)
@@ -312,8 +310,7 @@ class MyPreviewCards(Ui_previewCardsDialog):
         
         self.__question = self.displayQuestion.toPlainText()
         self.__answer = self.displayAnswer.toPlainText()
-        specialFormatsQ, specialFormatsA, noFormatQ, noFormatA = self.addFormat()
-
+        self.__formatQ, self.__formatA, noFormatQ, noFormatA = self.addFormat()
         data = None
         with open(self.__databaseFile, 'r') as  jsonFile:
             db = json.load(jsonFile)
@@ -326,8 +323,8 @@ class MyPreviewCards(Ui_previewCardsDialog):
                         'A' :self.__answer}})
                         if not (noFormatQ and noFormatA) :
                             course['contentCourse'][self.__indexChapter]['contentChapter'][self.__index]['format'] = {
-                                'Q' : specialFormatsQ,
-                                'A' : specialFormatsA}
+                                'Q' : self.__formatQ,
+                                'A' : self.__formatA}
                 data = globalData['data']
         with open(self.__databaseFile, 'w') as reWriteFile:
             json.dump(db, reWriteFile)
@@ -350,7 +347,6 @@ class MyPreviewCards(Ui_previewCardsDialog):
         self.display()
 
     def getFormat(self):
-        self.displayQuestion.setReadOnly(False)
         cursorQ = self.displayQuestion.textCursor()
         cursorQ.movePosition(QtGui.QTextCursor.Start)
         i = 0
@@ -362,20 +358,16 @@ class MyPreviewCards(Ui_previewCardsDialog):
             for fmt in fmtCaracter :
                 if fmt is 'b':
                     font.setBold(True)
-                    print ('b')
                 elif fmt is 'u':
                     font.setUnderline(True)
-                    print('u')
                 elif fmt is 'i':
                     font.setItalic(True)
-                    print('i')
                 elif fmt is 's':
                     font.setStrikeOut(True)
             totalCharacterFormat.setFont(font)
             cursorQ.setCharFormat(totalCharacterFormat)
             cursorQ.movePosition(QtGui.QTextCursor.NextCharacter) #reset anchor to get a single character at each iteration
             i += 1
-        self.displayAnswer.setReadOnly(False)
         cursorA = self.displayAnswer.textCursor()
         cursorA.movePosition(QtGui.QTextCursor.Start)
         i = 0
@@ -397,8 +389,6 @@ class MyPreviewCards(Ui_previewCardsDialog):
             cursorA.setCharFormat(totalCharacterFormat)
             cursorA.movePosition(QtGui.QTextCursor.NextCharacter)
             i += 1
-        self.displayQuestion.setReadOnly(True)
-        self.displayAnswer.setReadOnly(True)
 
     def formatText(self, menu, textWidget):
         index = menu.currentIndex()
@@ -438,6 +428,14 @@ class MyPreviewCards(Ui_previewCardsDialog):
 
         fmt.setFont(font)
         cursor.setCharFormat(fmt)
+        cursor.movePosition(QtGui.QTextCursor.EndOfBlock)
+        color.setNamedColor("black")
+        font.setBold(False)
+        font.setUnderline(False)
+        font.setItalic(False)
+        font.setStrikeOut(False)
+        textWidget.setTextColor(color)
+        fmt.setFont(font)
         cursor.setCharFormat(fmt)
     
     def addFormat(self):
