@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QMessageBox
 import sys
 import json
 from createQACard import Ui_createQACardDialog
+import utils
 
 class MyCreateQACard(Ui_createQACardDialog):
     def setupUi(self, Dialog, db, course, chapter, userName):
@@ -27,6 +28,8 @@ class MyCreateQACard(Ui_createQACardDialog):
         self.__course = course
         self.__chapter = chapter
         self.__userName = userName
+        self.__formatQ = []
+        self.__formatA = []
         self.confirmButton.pressed.connect(lambda:self.buttonPressed(self.confirmButton))
         self.confirmButton.released.connect(lambda:self.buttonReleased(self.confirmButton))
         self.confirmButton.clicked.connect(self.finish)
@@ -43,8 +46,8 @@ class MyCreateQACard(Ui_createQACardDialog):
         self.answerInput.setAutoFormatting(QtWidgets.QTextEdit.AutoBulletList)
         self.questionInput.setAutoFormatting(QtWidgets.QTextEdit.AutoBulletList)
 
-        self.formatMenuQ.currentIndexChanged.connect(lambda:self.formatText(self.formatMenuQ, self.questionInput))
-        self.formatMenuA.currentIndexChanged.connect(lambda:self.formatText(self.formatMenuA, self.answerInput))
+        self.formatMenuQ.currentIndexChanged.connect(lambda:utils.formatText(self.formatMenuQ, self.questionInput))
+        self.formatMenuA.currentIndexChanged.connect(lambda:utils.formatText(self.formatMenuA, self.answerInput))
 
     def getInfos(self):
         return self.__action, self.__question, self.__answer
@@ -62,68 +65,9 @@ class MyCreateQACard(Ui_createQACardDialog):
         self.__action = "confirm"
 
         #find all variations in format in question then answer
-        i = 0
-        fmt = QtGui.QTextCharFormat()
-        cursorQ = self.questionInput.textCursor()
-        cursorQ.movePosition(QtGui.QTextCursor.Start)
-        specialFormatsQ = []
-        while i < len(self.__question): 
-            specialFormatsQ.append([])
-            cursorQ.movePosition(QtGui.QTextCursor.NextCharacter)
-            fmt = cursorQ.charFormat()
-            if fmt.fontUnderline():
-                specialFormatsQ[i].append('u')
-            if fmt.fontItalic():
-                specialFormatsQ[i].append('i')
-            if fmt.fontStrikeOut():
-                specialFormatsQ[i].append('s')
-            if fmt.fontWeight() > 50:  #normal weight is 50, greater means bolded text
-                specialFormatsQ[i].append('b')
-            if self.questionInput.textColor().red() > 200:
-                specialFormatsQ[i].append('r')
-            if self.questionInput.textColor().green() > 120:
-                specialFormatsQ[i].append('g')
-            i += 1 
+        self.__formatQ, self.__formatA, noFormatQ, noFormatA = utils.addFormat(self.questionInput, self.answerInput, self.__question, self.__answer)
 
-        i = 0
-        cursorA = self.answerInput.textCursor()
-        cursorA.movePosition(QtGui.QTextCursor.Start)
-        specialFormatsA = []
-        while i < len(self.__answer): 
-            specialFormatsA.append([])
-            cursorA.movePosition(QtGui.QTextCursor.NextCharacter)
-            fmt = cursorA.charFormat()
-            print (fmt.fontWeight())
-            if fmt.fontUnderline():
-                specialFormatsA[i].append('u')
-            if fmt.fontItalic():
-                specialFormatsA[i].append('i')
-            if fmt.fontStrikeOut():
-                specialFormatsA[i].append('s')
-            if fmt.fontWeight() > 50:  #normal weight is 50, greater means bolded text
-                specialFormatsA[i].append('b')
-            if self.answerInput.textColor().red() > 200:
-                specialFormatsA[i].append('r')
-            if self.answerInput.textColor().green() > 120:
-                specialFormatsA[i].append('g')
-            i += 1 
         data = None
-        noFormatQ = False
-        for l in specialFormatsQ : 
-            if len(l) is not 0 : 
-                noFormatQ = False
-                break
-            else :
-                noFormatQ = True
-
-        noFormatA = False
-        for l in specialFormatsA : 
-            if len(l) is not 0 : 
-                noFormatA = False
-                break
-            else :
-                noFormatA = True
-
         with open(self.__relPathToDatabase, 'r') as  jsonFile:
             database = json.load(jsonFile)
         
@@ -150,8 +94,8 @@ class MyCreateQACard(Ui_createQACardDialog):
                                          "A": self.__answer},
                                     "format" : 
                                     {
-                                        "Q" : specialFormatsQ,
-                                        "A" : specialFormatsA
+                                        "Q" : self.__formatQ,
+                                        "A" : self.__formatA
                                     }})
 
                             
@@ -183,11 +127,11 @@ class MyCreateQACard(Ui_createQACardDialog):
     
     def formatText(self, menu, textWidget):
         index = menu.currentIndex()
-        fmt = QtGui.QTextCharFormat()
         cursor = textWidget.textCursor()#QtGui.QTextCursor()
+        fmt = cursor.charFormat()
         #self.questionInput.setTextCursor(cursor)
         font = textWidget.currentFont()
-        color = textWidget.textColor()
+        color = fmt.foreground().color()
         if index is 1 :
             font.setBold(True)
         elif index is 2:

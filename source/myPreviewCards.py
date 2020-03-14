@@ -5,6 +5,7 @@ import time
 from PyQt5 import QtCore, QtGui, QtWidgets
 from previewCards import Ui_previewCardsDialog
 from myAddStructuralItemDialog import MyAddStructuralItemDialog
+import utils
 
 class MyPreviewCards(Ui_previewCardsDialog):
     def setupUi(self, Dialog, data, databaseFile, course, userName, chapter = None):
@@ -78,9 +79,9 @@ class MyPreviewCards(Ui_previewCardsDialog):
         self.display()
         
         self.formatMenuQ.setVisible(False)
-        self.formatMenuQ.currentIndexChanged.connect(lambda:self.formatText(self.formatMenuQ, self.displayQuestion))
+        self.formatMenuQ.currentIndexChanged.connect(lambda:utils.formatText(self.formatMenuQ, self.displayQuestion))
         self.formatMenuA.setVisible(False)
-        self.formatMenuA.currentIndexChanged.connect(lambda:self.formatText(self.formatMenuA, self.displayAnswer))
+        self.formatMenuA.currentIndexChanged.connect(lambda:utils.formatText(self.formatMenuA, self.displayAnswer))
 
     def getNumberOfQuestionsInChapter(self):
         count = 0
@@ -164,7 +165,7 @@ class MyPreviewCards(Ui_previewCardsDialog):
         self.__question = self.displayQuestion.toPlainText()
         self.__answer = self.displayAnswer.toPlainText()
 
-        self.__formatQ, self.__formatA, noFormatQ, noFormatA = self.addFormat()
+        self.__formatQ, self.__formatA, noFormatQ, noFormatA = utils.addFormat(self.displayQuestion, self.displayAnswer, self.__question, self.__answer)
 
         data = None
         with open(self.__databaseFile, 'r') as  jsonFile:
@@ -276,7 +277,7 @@ class MyPreviewCards(Ui_previewCardsDialog):
         self.displayAnswer.repaint()
         self.displayQuestion.repaint()
         self.displayCounter.repaint()
-        self.getFormat()
+        utils.getFormat(self.displayQuestion, self.displayAnswer, self.__formatQ, self.__formatA)
 
     def buttonPressed(self, widget):
         widget.resize(0.95 * widget.width(), 0.95 * widget.height())
@@ -310,7 +311,7 @@ class MyPreviewCards(Ui_previewCardsDialog):
         
         self.__question = self.displayQuestion.toPlainText()
         self.__answer = self.displayAnswer.toPlainText()
-        self.__formatQ, self.__formatA, noFormatQ, noFormatA = self.addFormat()
+        self.__formatQ, self.__formatA, noFormatQ, noFormatA = utils.addFormat(self.displayQuestion, self.displayAnswer, self.__question, self.__answer)
         data = None
         with open(self.__databaseFile, 'r') as  jsonFile:
             db = json.load(jsonFile)
@@ -345,156 +346,3 @@ class MyPreviewCards(Ui_previewCardsDialog):
         self.formatMenuQ.setVisible(False)
         self.formatMenuA.setVisible(False)
         self.display()
-
-    def getFormat(self):
-        cursorQ = self.displayQuestion.textCursor()
-        cursorQ.movePosition(QtGui.QTextCursor.Start)
-        i = 0
-        while i < len(self.__formatQ):
-            cursorQ.movePosition(QtGui.QTextCursor.NextCharacter, mode=QtGui.QTextCursor.KeepAnchor) 
-            totalCharacterFormat = QtGui.QTextCharFormat()
-            font = self.displayQuestion.currentFont()
-            color = QtGui.QColor()
-            fmtCaracter = self.__formatQ[i]
-            for fmt in fmtCaracter :
-                if fmt is 'b':
-                    font.setBold(True)
-                elif fmt is 'u':
-                    font.setUnderline(True)
-                elif fmt is 'i':
-                    font.setItalic(True)
-                elif fmt is 's':
-                    font.setStrikeOut(True)
-                elif fmt is 'r':
-                    color.setNamedColor("red")
-                elif fmt is 'g':
-                    color.setNamedColor("green")
-            brush = QtGui.QBrush(color)
-            totalCharacterFormat.setFont(font)
-            totalCharacterFormat.setForeground(brush)
-            cursorQ.setCharFormat(totalCharacterFormat)
-            cursorQ.movePosition(QtGui.QTextCursor.NextCharacter) #reset anchor to get a single character at each iteration
-            i += 1
-        cursorA = self.displayAnswer.textCursor()
-        cursorA.movePosition(QtGui.QTextCursor.Start)
-        i = 0
-        while i < len(self.__formatA):
-            cursorA.movePosition(QtGui.QTextCursor.NextCharacter, mode=QtGui.QTextCursor.KeepAnchor)
-            totalCharacterFormat = QtGui.QTextCharFormat()
-            font = self.displayAnswer.currentFont()
-            fmtCaracter = self.__formatA[i]
-            color = QtGui.QColor()
-            for fmt in fmtCaracter :
-                if fmt is 'b':
-                    font.setBold(True)
-                elif fmt is 'u':
-                    font.setUnderline(True)
-                elif fmt is 'i':
-                    font.setItalic(True)
-                elif fmt is 's':
-                    font.setStrikeOut(True)
-                elif fmt is 'r':
-                    color.setNamedColor("red")
-                elif fmt is 'g':
-                    color.setNamedColor("green")
-            brush = QtGui.QBrush(color)
-            totalCharacterFormat.setFont(font)
-            totalCharacterFormat.setForeground(brush)
-            cursorA.setCharFormat(totalCharacterFormat)
-            cursorA.movePosition(QtGui.QTextCursor.NextCharacter)
-            i += 1
-
-    def formatText(self, menu, textWidget):
-        index = menu.currentIndex()
-        fmt = QtGui.QTextCharFormat()
-        cursor = textWidget.textCursor()#QtGui.QTextCursor()
-        #self.questionInput.setTextCursor(cursor)
-        font = textWidget.currentFont()
-        color = textWidget.textColor()
-        if index is 1 :
-            font.setBold(True)
-        elif index is 2:
-            font.setUnderline(True)
-        elif index is 3:
-            font.setItalic(True)
-        elif index is 4:
-            font.setStrikeOut(True)
-        elif index is 5 : 
-            color.setNamedColor("red")
-        elif index is 6 : 
-            color.setNamedColor("green")
-        elif index is 0 :
-            color.setNamedColor("black")
-            font.setBold(False)
-            font.setUnderline(False)
-            font.setItalic(False)
-            font.setStrikeOut(False)
-        brush = QtGui.QBrush(color)
-        fmt.setFont(font)
-        fmt.setForeground(brush)
-        cursor.setCharFormat(fmt)
-    
-    def addFormat(self):
-        i = 0
-        fmt = QtGui.QTextCharFormat()
-        cursorQ = self.displayQuestion.textCursor()
-        cursorQ.movePosition(QtGui.QTextCursor.Start)
-        specialFormatsQ = []
-        while i < len(self.__question): 
-            specialFormatsQ.append([])
-            cursorQ.movePosition(QtGui.QTextCursor.NextCharacter)
-            fmt = cursorQ.charFormat()
-            print (fmt.fontWeight())
-            if fmt.fontUnderline():
-                specialFormatsQ[i].append('u')
-            if fmt.fontItalic():
-                specialFormatsQ[i].append('i')
-            if fmt.fontStrikeOut():
-                specialFormatsQ[i].append('s')
-            if fmt.fontWeight() > 50:  #normal weight is 50, greater means bolded text
-                specialFormatsQ[i].append('b')
-            if self.displayQuestion.textColor().red() > 200:
-                specialFormatsQ[i].append('r')
-            if self.displayQuestion.textColor().green() > 120:
-                specialFormatsQ[i].append('g')
-            i += 1 
-        i = 0
-        cursorA = self.displayAnswer.textCursor()
-        cursorA.movePosition(QtGui.QTextCursor.Start)
-        specialFormatsA = []
-        while i < len(self.__answer): 
-            specialFormatsA.append([])
-            cursorA.movePosition(QtGui.QTextCursor.NextCharacter)
-            fmt = cursorA.charFormat()
-            print (fmt.fontWeight())
-            if fmt.fontUnderline():
-                specialFormatsA[i].append('u')
-            if fmt.fontItalic():
-                specialFormatsA[i].append('i')
-            if fmt.fontStrikeOut():
-                specialFormatsA[i].append('s')
-            if fmt.fontWeight() > 50:  #normal weight is 50, greater means bolded text
-                specialFormatsA[i].append('b')
-            if self.displayAnswer.textColor().red() > 200:
-                specialFormatsA[i].append('r')
-            if self.displayAnswer.textColor().green() > 120:
-                specialFormatsA[i].append('g')
-            i += 1 
-        data = None
-        noFormatQ = False
-        for l in specialFormatsQ : 
-            if len(l) is not 0 : 
-                noFormatQ = False
-                break
-            else :
-                noFormatQ = True
-
-        noFormatA = False
-        for l in specialFormatsA : 
-            if len(l) is not 0 : 
-                noFormatA = False
-                break
-            else :
-                noFormatA = True
-        
-        return specialFormatsQ, specialFormatsA, noFormatQ, noFormatA
