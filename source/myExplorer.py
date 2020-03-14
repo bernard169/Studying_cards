@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import explorer 
+import utils
 
 class MyExplorer(explorer.Ui_Dialog):
     def setupUi(self, Dialog, dataTree):
@@ -8,14 +9,14 @@ class MyExplorer(explorer.Ui_Dialog):
         super().setupUi(Dialog)
         self.coursesView.setHeaderLabels(["Cours", "Nombre de cartes"])
         self.buildTree(dataTree)
-        self.studyButton.pressed.connect(lambda:self.buttonPressed(self.studyButton))
-        self.studyButton.released.connect(lambda:self.buttonReleased(self.studyButton))
+        self.studyButton.pressed.connect(lambda:utils.buttonPressed(self.studyButton))
+        self.studyButton.released.connect(lambda:utils.buttonReleased(self.studyButton))
         self.studyButton.clicked.connect(self.study)
-        self.loginButton.pressed.connect(lambda:self.buttonPressed(self.loginButton))
-        self.loginButton.released.connect(lambda:self.buttonReleased(self.loginButton))
+        self.loginButton.pressed.connect(lambda:utils.buttonPressed(self.loginButton))
+        self.loginButton.released.connect(lambda:utils.buttonReleased(self.loginButton))
         self.loginButton.clicked.connect(self.logout)
-        self.createButton.pressed.connect(lambda:self.buttonPressed(self.createButton))
-        self.createButton.released.connect(lambda:self.buttonReleased(self.createButton))
+        self.createButton.pressed.connect(lambda:utils.buttonPressed(self.createButton))
+        self.createButton.released.connect(lambda:utils.buttonReleased(self.createButton))
         self.createButton.clicked.connect(self.create)
         self.coursesView.header().resizeSection(0, self.coursesView.width() * (2/3))
 
@@ -52,12 +53,6 @@ class MyExplorer(explorer.Ui_Dialog):
     
     def getAction(self):
         return self.__action
-    
-    def buttonPressed(self, widget):
-        widget.resize(0.95 * widget.width(), 0.95 * widget.height())
-    
-    def buttonReleased(self, widget):
-        widget.resize((1/0.95) * widget.width(), (1/0.95) * widget.height())
 
 if __name__ == "__main__":
     import sys

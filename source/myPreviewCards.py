@@ -40,28 +40,28 @@ class MyPreviewCards(Ui_previewCardsDialog):
         self.__numberOfQInChapter = 0
         self.validateChangeButton.setVisible(False)
 
-        self.deleteButton.pressed.connect(lambda:self.buttonPressed(self.deleteButton))
-        self.deleteButton.released.connect(lambda:self.buttonReleased(self.deleteButton))
+        self.deleteButton.pressed.connect(lambda:utils.buttonPressed(self.deleteButton))
+        self.deleteButton.released.connect(lambda:utils.buttonReleased(self.deleteButton))
         self.deleteButton.clicked.connect(self.delete)
 
-        self.editButton.pressed.connect(lambda:self.buttonPressed(self.editButton))
-        self.editButton.released.connect(lambda:self.buttonReleased(self.editButton))
+        self.editButton.pressed.connect(lambda:utils.buttonPressed(self.editButton))
+        self.editButton.released.connect(lambda:utils.buttonReleased(self.editButton))
         self.editButton.clicked.connect(self.edit)
 
-        self.stopButton.pressed.connect(lambda:self.buttonPressed(self.stopButton))
-        self.stopButton.released.connect(lambda:self.buttonReleased(self.stopButton))
+        self.stopButton.pressed.connect(lambda:utils.buttonPressed(self.stopButton))
+        self.stopButton.released.connect(lambda:utils.buttonReleased(self.stopButton))
         self.stopButton.clicked.connect(self.stop)
 
-        self.nextButton.pressed.connect(lambda:self.buttonPressed(self.nextButton))
-        self.nextButton.released.connect(lambda:self.buttonReleased(self.nextButton))
+        self.nextButton.pressed.connect(lambda:utils.buttonPressed(self.nextButton))
+        self.nextButton.released.connect(lambda:utils.buttonReleased(self.nextButton))
         self.nextButton.clicked.connect(self.next)
 
-        self.previousButton.pressed.connect(lambda:self.buttonPressed(self.previousButton))
-        self.previousButton.released.connect(lambda:self.buttonReleased(self.previousButton))
+        self.previousButton.pressed.connect(lambda:utils.buttonPressed(self.previousButton))
+        self.previousButton.released.connect(lambda:utils.buttonReleased(self.previousButton))
         self.previousButton.clicked.connect(self.previous)
 
-        self.insertButton.pressed.connect(lambda:self.buttonPressed(self.insertButton))
-        self.insertButton.released.connect(lambda:self.buttonReleased(self.insertButton))
+        self.insertButton.pressed.connect(lambda:utils.buttonPressed(self.insertButton))
+        self.insertButton.released.connect(lambda:utils.buttonReleased(self.insertButton))
         self.insertButton.clicked.connect(self.insert)
         #self.displayAnswer.setAutoFormatting(QtWidgets.QTextEdit.AutoBulletList)
         #self.displayQuestion.setAutoFormatting(QtWidgets.QTextEdit.AutoBulletList)
@@ -278,12 +278,6 @@ class MyPreviewCards(Ui_previewCardsDialog):
         self.displayQuestion.repaint()
         self.displayCounter.repaint()
         utils.getFormat(self.displayQuestion, self.displayAnswer, self.__formatQ, self.__formatA)
-
-    def buttonPressed(self, widget):
-        widget.resize(0.95 * widget.width(), 0.95 * widget.height())
-    
-    def buttonReleased(self, widget):
-        widget.resize((1/0.95) * widget.width(), (1/0.95) * widget.height())
   
     def validateChange(self):
         self.readyToValidate = True

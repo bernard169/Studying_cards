@@ -30,14 +30,14 @@ class MyCreateQACard(Ui_createQACardDialog):
         self.__userName = userName
         self.__formatQ = []
         self.__formatA = []
-        self.confirmButton.pressed.connect(lambda:self.buttonPressed(self.confirmButton))
-        self.confirmButton.released.connect(lambda:self.buttonReleased(self.confirmButton))
+        self.confirmButton.pressed.connect(lambda: utils.buttonPressed(self.confirmButton))
+        self.confirmButton.released.connect(lambda:utils.buttonReleased(self.confirmButton))
         self.confirmButton.clicked.connect(self.finish)
-        self.cancelButton.pressed.connect(lambda:self.buttonPressed(self.cancelButton))
-        self.cancelButton.released.connect(lambda:self.buttonReleased(self.cancelButton))
+        self.cancelButton.pressed.connect(lambda:utils.buttonPressed(self.cancelButton))
+        self.cancelButton.released.connect(lambda:utils.buttonReleased(self.cancelButton))
         self.cancelButton.clicked.connect(self.cancel)
-        self.newCardButton.pressed.connect(lambda:self.buttonPressed(self.newCardButton))
-        self.newCardButton.released.connect(lambda:self.buttonReleased(self.newCardButton))
+        self.newCardButton.pressed.connect(lambda:utils.buttonPressed(self.newCardButton))
+        self.newCardButton.released.connect(lambda:utils.buttonReleased(self.newCardButton))
         self.newCardButton.clicked.connect(self.newCard)
         #self.textPoliceSlider.setValue(50)
         #self.textPoliceSlider.valueChanged.connect(self.changeTextPolice)

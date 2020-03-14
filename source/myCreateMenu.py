@@ -4,6 +4,7 @@ import sys
 import json
 import createMenu
 from myAddStructuralItemDialog import MyAddStructuralItemDialog
+import utils
 
 class MyCreatePageDialog(createMenu.Ui_createPageDialog):
     def setupUi(self, createPageDialog, dataTree, databaseFile, userName):
@@ -15,36 +16,36 @@ class MyCreatePageDialog(createMenu.Ui_createPageDialog):
         self.dialog = createPageDialog
         self.coursesView.setHeaderLabels(["Cours", "Nombre de cartes"])
         self.buildTree()
-        self.homeButton.pressed.connect(lambda:self.buttonPressed(self.homeButton))
-        self.homeButton.released.connect(lambda:self.buttonReleased(self.homeButton))
+        self.homeButton.pressed.connect(lambda:utils.buttonPressed(self.homeButton))
+        self.homeButton.released.connect(lambda:utils.buttonReleased(self.homeButton))
         self.homeButton.clicked.connect(self.home)
 
-        self.addCourseButton.pressed.connect(lambda:self.buttonPressed(self.addCourseButton))
-        self.addCourseButton.released.connect(lambda:self.buttonReleased(self.addCourseButton))
+        self.addCourseButton.pressed.connect(lambda:utils.buttonPressed(self.addCourseButton))
+        self.addCourseButton.released.connect(lambda:utils.buttonReleased(self.addCourseButton))
         self.addCourseButton.clicked.connect(self.addCourse)
 
-        self.addChapterButton.pressed.connect(lambda:self.buttonPressed(self.addChapterButton))
-        self.addChapterButton.released.connect(lambda:self.buttonReleased(self.addChapterButton))
+        self.addChapterButton.pressed.connect(lambda:utils.buttonPressed(self.addChapterButton))
+        self.addChapterButton.released.connect(lambda:utils.buttonReleased(self.addChapterButton))
         self.addChapterButton.clicked.connect(self.addChapter)
 
-        self.addCardButton.pressed.connect(lambda:self.buttonPressed(self.addCardButton))
-        self.addCardButton.released.connect(lambda:self.buttonReleased(self.addCardButton))
+        self.addCardButton.pressed.connect(lambda:utils.buttonPressed(self.addCardButton))
+        self.addCardButton.released.connect(lambda:utils.buttonReleased(self.addCardButton))
         self.addCardButton.clicked.connect(self.addCard)
 
-        self.removeCourseButton.pressed.connect(lambda:self.buttonPressed(self.removeCourseButton))
-        self.removeCourseButton.released.connect(lambda:self.buttonReleased(self.removeCourseButton))
+        self.removeCourseButton.pressed.connect(lambda:utils.buttonPressed(self.removeCourseButton))
+        self.removeCourseButton.released.connect(lambda:utils.buttonReleased(self.removeCourseButton))
         self.removeCourseButton.clicked.connect                                                 (self.removeCourse)
 
-        self.removeChapterButton.pressed.connect(lambda:self.buttonPressed(self.removeChapterButton))
-        self.removeChapterButton.released.connect(lambda:self.buttonReleased(self.removeChapterButton))
-        self.removeChapterButton.clicked.connect                                                (self.removeChapter)
+        self.removeChapterButton.pressed.connect(lambda:utils.buttonPressed(self.removeChapterButton))
+        self.removeChapterButton.released.connect(lambda:utils.buttonReleased(self.removeChapterButton))
+        self.removeChapterButton.clicked.connect(self.removeChapter)
 
-        self.editButton.pressed.connect(lambda:self.buttonPressed(self.editButton))
-        self.editButton.released.connect(lambda:self.buttonReleased(self.editButton))
+        self.editButton.pressed.connect(lambda:utils.buttonPressed(self.editButton))
+        self.editButton.released.connect(lambda:utils.buttonReleased(self.editButton))
         self.editButton.clicked.connect(self.edit)
 
-        self.previewButton.pressed.connect(lambda:self.buttonPressed(self.previewButton))
-        self.previewButton.released.connect(lambda:self.buttonReleased(self.previewButton))
+        self.previewButton.pressed.connect(lambda:utils.buttonPressed(self.previewButton))
+        self.previewButton.released.connect(lambda:utils.buttonReleased(self.previewButton))
         self.previewButton.clicked.connect(self.preview)
 
         self.coursesView.header().resizeSection(0, self.coursesView.width() * (2/3))
@@ -297,9 +298,3 @@ class MyCreatePageDialog(createMenu.Ui_createPageDialog):
 
     def getAction(self):
         return self.__action
-
-    def buttonPressed(self, widget):
-        widget.resize(0.95 * widget.width(), 0.95 * widget.height())
-    
-    def buttonReleased(self, widget):
-        widget.resize((1/0.95) * widget.width(), (1/0.95) * widget.height())

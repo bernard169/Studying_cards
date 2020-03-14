@@ -146,3 +146,9 @@ def getFormat(questionWidget, answerWidget, formatQ, formatA):
         cursorA.setCharFormat(totalCharacterFormat)
         cursorA.movePosition(QtGui.QTextCursor.NextCharacter)
         i += 1
+    
+def buttonPressed(widget):
+    widget.resize(0.95 * widget.width(), 0.95 * widget.height())
+
+def buttonReleased(widget):
+    widget.resize((1/0.95) * widget.width(), (1/0.95) * widget.height())
