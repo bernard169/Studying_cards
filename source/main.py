@@ -10,6 +10,8 @@ import myCreateMenu as createMenu
 import myCreateQACard as createQACard
 import myAddCard
 import myPreviewCards as previewCards
+import myStudyMode as studyMode
+from myChooseStudyStyle import myChooseStudyStyleDialog as myChStStDialog
 import json
 
 def getUserData(database, userName):
@@ -87,9 +89,44 @@ def openExplorer(data, dataBaseFile, userName, database):
         openExplorer(data, dataBaseFile, newUserName, database)
     elif action == "create":
         openCreatePage(data, dataBaseFile, newUserName, database)
-    elif action == "study":
-        pass
+    elif "study" in action:
+        itemsToStudy = action.split("_")
+        print(itemsToStudy)
+        iterator = filter(lambda item : not (item == '') and item is not None, itemsToStudy)
+        itemsToStudy = list(iterator)[1:]
+        print (itemsToStudy)
+        study(data, dataBaseFile, userName, database, itemsToStudy)
     return action, data
+
+def study(data, dataBaseFile, userName, database, itemsToStudy):
+    isRandom = False
+    app = QtWidgets.QApplication(sys.argv)
+    Dialog = QtWidgets.QDialog()
+    ui = myChStStDialog()
+    ui.setupUi(Dialog)
+    Dialog.show()
+    app.exec_()
+    decision = ui.getInfos()
+    if decision == "":
+        openExplorer(data, dataBaseFile, userName, database)
+    elif decision == "ordered":
+        isRandom = False
+    elif decision == "random":
+        isRandom = True
+    else : 
+        print("Error, unparsable decision \n")
+        sys.exit(-1)
+    del(app)
+    del(Dialog)
+    del(ui)
+    app = QtWidgets.QApplication(sys.argv)
+    Dialog = QtWidgets.QDialog()
+    ui = studyMode.myStudyDialog()
+    ui.setupUi(Dialog, data, database, dataBaseFile, itemsToStudy, isRandom)
+    Dialog.show()
+    app.exec_()
+    openExplorer(data, dataBaseFile, userName, database)
+    #action = ui.getAction()
     
 def openCreatePage(data, dataBaseFile, userName, database):
     app = QtWidgets.QApplication(sys.argv)
@@ -113,21 +150,6 @@ def openCreatePage(data, dataBaseFile, userName, database):
         course = parsedAction[1]
         chapter = parsedAction[2]
         resp, cardData = addCard(data, dataBaseFile, userName,                           database, course, chapter)
-        '''
-        if cardData[0] == "confirm" : 
-            print("confirm")
-            msg = QMessageBox()
-            msg.setWindowTitle("Good job")
-            msg.setText("Vous avez créé une carte dans le chapitre {} avec comme question {} et comme réponse {}".format(chapter, cardData[1][1], cardData[1][2]))
-            msg.setIcon(QMessageBox.Information)
-            ex = msg.exec_()
-        elif cardData[0] == "cancel":
-            msg = QMessageBox()
-            msg.setWindowTitle("Warning")
-            msg.setText("Vous avez annulé la création de votre carte")
-            msg.setIcon(QMessageBox.Information)
-            ex = msg.exec_()
-        '''
         print("reouvre createpage")
         database = {}
         with open(databaseFile, 'r') as  json_file:
@@ -174,7 +196,7 @@ def addCard(data, dataBaseFile, userName,               database, course, chapte
     else : 
         msg = QMessageBox()
         msg.setWindowTitle("Warning")
-        msg.setText("Cette fonctionnalité n\'existe pas" +              " encore :-(")
+        msg.setText("Cette fonctionnalité n\'existe pas encore :-(")
         msg.setIcon(QMessageBox.Information)
         ex = msg.exec_()
     return action, data 

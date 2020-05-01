@@ -271,6 +271,15 @@ background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba
       </property>
       <property name="icon">
        <iconset>
+        <normaloff>images/highlight.png</normaloff>images/highlight.png</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
         <normaloff>images/redSquare.png</normaloff>images/redSquare.png</iconset>
       </property>
      </item>
@@ -281,6 +290,15 @@ background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba
       <property name="icon">
        <iconset>
         <normaloff>images/greenSquare.png</normaloff>images/greenSquare.png</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>images/purpleSquare.png</normaloff>images/purpleSquare.png</iconset>
       </property>
      </item>
     </widget>
@@ -352,6 +370,15 @@ background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba
       </property>
       <property name="icon">
        <iconset>
+        <normaloff>images/highlight.png</normaloff>images/highlight.png</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
         <normaloff>images/redSquare.png</normaloff>images/redSquare.png</iconset>
       </property>
      </item>
@@ -362,6 +389,15 @@ background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba
       <property name="icon">
        <iconset>
         <normaloff>images/greenSquare.png</normaloff>images/greenSquare.png</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>images/purpleSquare.png</normaloff>images/purpleSquare.png</iconset>
       </property>
      </item>
     </widget>

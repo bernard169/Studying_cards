@@ -1,4 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QMessageBox
 import explorer 
 import utils
 
@@ -19,6 +20,7 @@ class MyExplorer(explorer.Ui_Dialog):
         self.createButton.released.connect(lambda:utils.buttonReleased(self.createButton))
         self.createButton.clicked.connect(self.create)
         self.coursesView.header().resizeSection(0, self.coursesView.width() * (2/3))
+        self.coursesView.setSelectionMode(QtWidgets.QAbstractItemView.MultiSelection)
 
     def addItem (self, name, numberOfCards, parent=0):
         if not parent:
@@ -26,7 +28,6 @@ class MyExplorer(explorer.Ui_Dialog):
         return QtWidgets.QTreeWidgetItem(parent, [name, str(numberOfCards)])
 
     def buildTree(self, dataTree):
-        print(dataTree)
         for course in dataTree["courses"]:
             cardsInCourse = 0
             for chapter in course["contentCourse"]:
@@ -40,8 +41,23 @@ class MyExplorer(explorer.Ui_Dialog):
                 self.addItem(chapter["name"], cardsInChapter, courseItem)      
     
     def study(self):
-        self.__action = "study"
-        self.dialog.done(0)
+        selected = self.coursesView.selectedItems()
+        if len(selected) == 0 :
+            msg = QMessageBox()
+            msg.setWindowTitle("Warning")
+            msg.setText("Vous devez sélectionner un chapitre " +              "ou cours à étudier !")
+            msg.setIcon(QMessageBox.Warning)
+            ex = msg.exec_()
+        else:
+            self.__action = "study_"
+            for item in selected:
+                studySubject = item.text(0)
+                if item.parent() is not None:
+                    subjectParent = item.parent().text(0)
+                    self.__action += subjectParent + "{" + studySubject + "_"
+                else : 
+                    self.__action += studySubject + "_"
+            self.dialog.done(0)
 
     def create(self):
         self.__action = "create"

@@ -43,9 +43,6 @@ class MyCreateQACard(Ui_createQACardDialog):
         #self.textPoliceSlider.valueChanged.connect(self.changeTextPolice)
         #self.buttonPoliceSlider.setValue(50)
         #self.buttonPoliceSlider.valueChanged.connect(self.changeButtonPolice)
-        self.answerInput.setAutoFormatting(QtWidgets.QTextEdit.AutoBulletList)
-        self.questionInput.setAutoFormatting(QtWidgets.QTextEdit.AutoBulletList)
-
         self.formatMenuQ.currentIndexChanged.connect(lambda:utils.formatText(self.formatMenuQ, self.questionInput))
         self.formatMenuA.currentIndexChanged.connect(lambda:utils.formatText(self.formatMenuA, self.answerInput))
 

@@ -113,7 +113,6 @@ class MyPreviewCards(Ui_previewCardsDialog):
                 return course['contentCourse'][self.__indexChapter]['name']
 
     def update(self):
-        print("\n chapter name is : ", self.__chapter)
         self.__formatQ = []
         self.__formatA = []
         for course in self.__data['courses']:
@@ -123,7 +122,6 @@ class MyPreviewCards(Ui_previewCardsDialog):
                         if chapter['name'] == self.__chapter:
                             self.__question = chapter['contentChapter'][self.__index]['contentCard']['Q']
                             self.__answer = chapter['contentChapter'][self.__index]['contentCard']['A']
-                            print("\n answer should be : ", chapter['contentChapter'][self.__index]['contentCard']['A'])
                             try :
                                 self.__formatQ = chapter['contentChapter'][self.__index]['format']['Q']
                                 self.__formatA = chapter['contentChapter'][self.__index]['format']['A']
@@ -277,7 +275,7 @@ class MyPreviewCards(Ui_previewCardsDialog):
         self.displayAnswer.repaint()
         self.displayQuestion.repaint()
         self.displayCounter.repaint()
-        utils.getFormat(self.displayQuestion, self.displayAnswer, self.__formatQ, self.__formatA)
+        utils.getFormat(self.displayQuestion, self.__formatQ, self.displayAnswer, self.__formatA)
   
     def validateChange(self):
         self.readyToValidate = True

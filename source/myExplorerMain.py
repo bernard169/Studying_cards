@@ -1,4 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from QtWidgets import QMessageBox
 import explorerMain
 
 class MyExplorerMain(explorerMain.Ui_MainWindow):
@@ -31,7 +32,20 @@ class MyExplorerMain(explorerMain.Ui_MainWindow):
                 self.addItem(chapter["name"], cardsInChapter, courseItem)      
     
     def study(self):
-        self.__action = "study"
+        selected = self.coursesView.selectedItems()
+        if len(selected) == 0 :
+            msg = QMessageBox()
+            msg.setWindowTitle("Warning")
+            msg.setText("Vous devez sélectionner un chapitre " +              "ou cours à étudier !")
+            msg.setIcon(QMessageBox.Warning)
+            ex = msg.exec_()
+        else:
+            print("should append")
+            self.__action = "study_"
+            for item in selected:
+                studySubject = item.text(0)
+                print('study subject :', studySubject)
+                self.__action += studySubject + "_"
         self.dialog.done(0)
 
     def create(self):

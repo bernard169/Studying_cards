@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'D:\Documents\Projets\Studying_cards\createQACard.ui'
+# Form implementation generated from reading ui file 'D:\Documents\Projets\Studying_cards\source\createQACard.ui'
 #
 # Created by: PyQt5 UI code generator 5.12.3
 #
@@ -158,13 +158,21 @@ class Ui_createQACardDialog(object):
         self.formatMenuQ.addItem(icon4, "")
         self.formatMenuQ.setItemText(4, "")
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("images/redSquare.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon5.addPixmap(QtGui.QPixmap("images/highlight.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.formatMenuQ.addItem(icon5, "")
         self.formatMenuQ.setItemText(5, "")
         icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap("images/greenSquare.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon6.addPixmap(QtGui.QPixmap("images/redSquare.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.formatMenuQ.addItem(icon6, "")
         self.formatMenuQ.setItemText(6, "")
+        icon7 = QtGui.QIcon()
+        icon7.addPixmap(QtGui.QPixmap("images/greenSquare.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.formatMenuQ.addItem(icon7, "")
+        self.formatMenuQ.setItemText(7, "")
+        icon8 = QtGui.QIcon()
+        icon8.addPixmap(QtGui.QPixmap("images/purpleSquare.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.formatMenuQ.addItem(icon8, "")
+        self.formatMenuQ.setItemText(8, "")
         self.gridLayout.addWidget(self.formatMenuQ, 0, 6, 1, 1)
         self.formatMenuA = QtWidgets.QComboBox(createQACardDialog)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
@@ -189,6 +197,10 @@ class Ui_createQACardDialog(object):
         self.formatMenuA.setItemText(5, "")
         self.formatMenuA.addItem(icon6, "")
         self.formatMenuA.setItemText(6, "")
+        self.formatMenuA.addItem(icon7, "")
+        self.formatMenuA.setItemText(7, "")
+        self.formatMenuA.addItem(icon8, "")
+        self.formatMenuA.setItemText(8, "")
         self.gridLayout.addWidget(self.formatMenuA, 4, 6, 1, 1)
 
         self.retranslateUi(createQACardDialog)
