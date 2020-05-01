@@ -107,14 +107,18 @@ def study(data, dataBaseFile, userName, database, itemsToStudy):
     Dialog.show()
     app.exec_()
     decision = ui.getInfos()
-    if decision == "":
+    if decision == "" or decision == []:
         openExplorer(data, dataBaseFile, userName, database)
-    elif decision == "ordered":
+    elif decision[0] == "ordered":
         isRandom = False
-    elif decision == "random":
+    elif decision[0] == "random":
         isRandom = True
     else : 
-        print("Error, unparsable decision \n")
+        msg = QMessageBox()
+        msg.setWindowTitle("Warning")
+        msg.setText("Cannot parse decision. Please contact a collaborator")
+        msg.setIcon(QMessageBox.Critical)
+        ex = msg.exec_()
         sys.exit(-1)
     del(app)
     del(Dialog)
@@ -122,7 +126,7 @@ def study(data, dataBaseFile, userName, database, itemsToStudy):
     app = QtWidgets.QApplication(sys.argv)
     Dialog = QtWidgets.QDialog()
     ui = studyMode.myStudyDialog()
-    ui.setupUi(Dialog, data, database, dataBaseFile, itemsToStudy, isRandom)
+    ui.setupUi(Dialog, userName, data, database, dataBaseFile, itemsToStudy, isRandom, decision[1], decision[2])
     Dialog.show()
     app.exec_()
     openExplorer(data, dataBaseFile, userName, database)
@@ -168,9 +172,9 @@ def openCreatePage(data, dataBaseFile, userName, database):
             print("Error while parsing action")
     return action, data
 
-def addCard(data, dataBaseFile, userName,               database, course, chapter) :
+def addCard(data, dataBaseFile, userName, database, course, chapter) :
     action = ""
-    data = None
+    #data = None
     app = QtWidgets.QApplication(sys.argv)
     Dialog = QtWidgets.QDialog()
     ui = myAddCard.MyAddCardDialog()
@@ -185,7 +189,7 @@ def addCard(data, dataBaseFile, userName,               database, course, chapte
         app = QtWidgets.QApplication(sys.argv)
         Dialog = QtWidgets.QDialog()
         ui = createQACard.MyCreateQACard()
-        ui.setupUi(Dialog, dataBaseFile, course, chapter,      userName)
+        ui.setupUi(Dialog, dataBaseFile, course, chapter, userName)
         Dialog.show()
         app.exec_()
         button, question, answer = ui.getInfos()
@@ -193,12 +197,15 @@ def addCard(data, dataBaseFile, userName,               database, course, chapte
         del app 
         del Dialog
         del ui
+    elif action == "cancel":
+        openCreatePage(data, dataBaseFile, userName, database)
     else : 
         msg = QMessageBox()
         msg.setWindowTitle("Warning")
         msg.setText("Cette fonctionnalité n\'existe pas encore :-(")
         msg.setIcon(QMessageBox.Information)
         ex = msg.exec_()
+        addCard(data, dataBaseFile, userName, database, course, chapter)
     return action, data 
 
 def preview(data, databaseFile, course, userName, database, chapter=None):

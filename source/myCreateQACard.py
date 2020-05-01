@@ -62,7 +62,8 @@ class MyCreateQACard(Ui_createQACardDialog):
         self.__action = "confirm"
 
         #find all variations in format in question then answer
-        self.__formatQ, self.__formatA, noFormatQ, noFormatA = utils.addFormat(self.questionInput, self.answerInput, self.__question, self.__answer)
+        self.__formatQ,  noFormatQ= utils.addFormat(self.questionInput, self.__question)
+        self.__formatA, noFormatA = utils.addFormat(self.answerInput, self.__answer)
 
         data = None
         with open(self.__relPathToDatabase, 'r') as  jsonFile:

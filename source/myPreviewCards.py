@@ -163,7 +163,8 @@ class MyPreviewCards(Ui_previewCardsDialog):
         self.__question = self.displayQuestion.toPlainText()
         self.__answer = self.displayAnswer.toPlainText()
 
-        self.__formatQ, self.__formatA, noFormatQ, noFormatA = utils.addFormat(self.displayQuestion, self.displayAnswer, self.__question, self.__answer)
+        self.__formatQ, noFormatQ = utils.addFormat(self.displayQuestion, self.__question)
+        self.__formatA, noFormatA = utils.addFormat(self.displayAnswer, self.__answer)
 
         data = None
         with open(self.__databaseFile, 'r') as  jsonFile:
@@ -275,7 +276,8 @@ class MyPreviewCards(Ui_previewCardsDialog):
         self.displayAnswer.repaint()
         self.displayQuestion.repaint()
         self.displayCounter.repaint()
-        utils.getFormat(self.displayQuestion, self.__formatQ, self.displayAnswer, self.__formatA)
+        utils.getFormat(self.displayQuestion, self.__formatQ)
+        utils.getFormat(self.displayAnswer, self.__formatA)
   
     def validateChange(self):
         self.readyToValidate = True

@@ -2,12 +2,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from studyMode import Ui_studyModeDialog as studyDialog 
 from PyQt5.QtWidgets import QMessageBox
 import random
+import json
 import time
 import utils
 
 class myStudyDialog(studyDialog):
-    def setupUi(self, dialog, data, database, databaseFile, itemsToStudy, isRandom):
+    def setupUi(self, dialog, username, data, database, databaseFile, itemsToStudy, isRandom, spacingMistakes, minPointsRequired):
         super().setupUi(dialog)
+        self.__userName = username
         self.__isRandom = isRandom
         self.__dialog = dialog
         self.__data = data
@@ -41,9 +43,13 @@ class myStudyDialog(studyDialog):
         self.__chaptersDone = 0
         self.__neededWork = []
         self.__playbackCounter = 0
+        self.__spacingMistakes = spacingMistakes if spacingMistakes > 2 else 3
         self.__unAnsweredQuestions = []
         self.getAllQuestionsByIndex()
-        self.__pointsRequired = 2 if isRandom else 1
+        self.__pointsRequired = 1
+        if minPointsRequired > 1 :
+            self.__pointsRequired = minPointsRequired
+        #self.__pointsRequired = 2 if isRandom else 1
         self.__prevQIsWrong = False
         self.__qActive = True
         self.validateQButton.setVisible(False)
@@ -59,6 +65,10 @@ class myStudyDialog(studyDialog):
         self.validateChangeButton.clicked.connect(self.validateChange)
         self.cancelChangeButton.clicked.connect(self.cancelChange)
         self.editButton.clicked.connect(self.edit)
+        self.formatMenu.currentIndexChanged.connect(lambda:utils.formatText(self.formatMenu, self.displayQA))
+        for button in self.__dialog.findChildren(QtWidgets.QPushButton):
+            button.pressed.connect(lambda:utils.buttonPressed(button))
+            button.released.connect(lambda:utils.buttonReleased(button))
 
     def getNumberOfQuestionsInChapter(self):
         count = 0
@@ -120,15 +130,15 @@ class myStudyDialog(studyDialog):
         if len(self.__neededWork) > 0:
             self.__playbackCounter += 1
         if self.__prevQIsWrong : 
-            pass
-        elif self.__playbackCounter > 3:
+            self.viewQuestion()
+        elif self.__playbackCounter > self.__spacingMistakes:
             print(self.__neededWork)
             self.__chapter = self.__neededWork[0][0]
             self.__index = self.__neededWork[0][1]
             self.__indexChapter = self.getIndexOfChapter()
             self.__neededWork.pop(0)
             if len(self.__neededWork) > 0:
-                self.__playbackCounter -= 2
+                self.__playbackCounter -= (self.__spacingMistakes - 1)
             else :
                 self.__playbackCounter = 0
             self.viewQuestion()
@@ -291,7 +301,6 @@ class myStudyDialog(studyDialog):
 
     def validateQuestion(self):
         #add one point to this question
-        self.__prevQIsWrong = False
         courseIndex = -1
         chapterIndex = -1
         cardIndex = -1
@@ -306,18 +315,20 @@ class myStudyDialog(studyDialog):
                         for card in chapter['contentChapter']:
                             if (card['contentCard']['Q'] == self.__question) and (card['contentCard']['A'] == self.__answer) :
                                 cardIndex = chapter['contentChapter'].index(card)
-        for cardInfo in self.__unAnsweredQuestions :
-            if cardInfo[:3] == [courseIndex, chapterIndex, cardIndex]:
-                cardInfo[3] += 1
-                cardFound = True
-                print("Good for you :) \n")
-        if not cardFound :
-            msg = QMessageBox()
-            msg.setWindowTitle("Warning")
-            msg.setText("Error : cannot find the specified card. Please contact a contributor.")
-            msg.setIcon(QMessageBox.critical)
-            ex = msg.exec_()
-            self.__dialog.done(0)
+        if not self.__prevQIsWrong :
+            for cardInfo in self.__unAnsweredQuestions :
+                if cardInfo[:3] == [courseIndex, chapterIndex, cardIndex]:
+                    cardInfo[3] += 1
+                    cardFound = True
+                    print("Good for you :) \n")
+            if not cardFound :
+                msg = QMessageBox()
+                msg.setWindowTitle("Warning")
+                msg.setText("Error : cannot find the specified card. Please contact a contributor.")
+                msg.setIcon(QMessageBox.Critical)
+                ex = msg.exec_()
+                self.__dialog.done(0)
+        self.__prevQIsWrong = False
         self.viewAnswerButton.setVisible(True)
         self.validateQButton.setVisible(False)
         self.needWorkButton.setVisible(False)
@@ -326,7 +337,8 @@ class myStudyDialog(studyDialog):
     def needsWork(self):
         #add a function to come back to this question 
         self.__chapter = self.getchapterFromIndex() if self.__chapter is None else self.__chapter
-        self.__neededWork.append((self.__chapter, self.__index))
+        if not self.__prevQIsWrong :
+            self.__neededWork.append((self.__chapter, self.__index))
         self.viewAnswerButton.setVisible(True)
         self.validateQButton.setVisible(False)
         self.needWorkButton.setVisible(False)
@@ -355,13 +367,35 @@ class myStudyDialog(studyDialog):
         self.cancelChangeButton.setVisible(False)
         self.formatMenu.setVisible(False)
         self.editButton.setVisible(True)
+        text = self.displayQA.toPlainText()
+        formats, noFormat = utils.addFormat(self.displayQA, text)
         if self.__qActive :
-            self.__question = self.displayQA.toPlainText()
+            self.__question = text
             self.viewAnswerButton.setVisible(True)
         else :
-            self.__answer = self.displayQA.toPlainText()
+            self.__answer = text
             self.validateQButton.setVisible(True)
             self.needWorkButton.setVisible(True)
+
+        data = None
+        with open(self.__databaseFile, 'r') as  jsonFile:
+            db = json.load(jsonFile)
+
+        for globalData in db['globalData']:
+            if globalData['username'] == self.__userName:
+                for course in globalData['data']['courses']: 
+                    if course['name'] == self.__course:
+                        course['contentCourse'][self.__indexChapter]['contentChapter'][self.__index]['contentCard']['Q'] = self.__question
+                        course['contentCourse'][self.__indexChapter]['contentChapter'][self.__index]['contentCard']['A'] = self.__answer
+                        if not(noFormat) and self.__qActive:
+                            course['contentCourse'][self.__indexChapter]['contentChapter'][self.__index]['format']['Q'] = formats
+                        elif not(noFormat) and not(self.__qActive):
+                            course['contentCourse'][self.__indexChapter]['contentChapter'][self.__index]['format']['A'] = formats
+                data = globalData['data']
+        with open(self.__databaseFile, 'w') as reWriteFile:
+            json.dump(db, reWriteFile)
+        self.__data = data
+        
         ####################
         ### INSERT HERE ####
         ####################
