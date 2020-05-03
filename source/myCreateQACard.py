@@ -122,33 +122,3 @@ class MyCreateQACard(Ui_createQACardDialog):
     
     def buttonReleased(self, widget):
         widget.resize((1/0.95) * widget.width(), (1/0.95) * widget.height())
-    
-    def formatText(self, menu, textWidget):
-        index = menu.currentIndex()
-        cursor = textWidget.textCursor()#QtGui.QTextCursor()
-        fmt = cursor.charFormat()
-        #self.questionInput.setTextCursor(cursor)
-        font = textWidget.currentFont()
-        color = fmt.foreground().color()
-        if index is 1 :
-            font.setBold(True)
-        elif index is 2:
-            font.setUnderline(True)
-        elif index is 3:
-            font.setItalic(True)
-        elif index is 4:
-            font.setStrikeOut(True)
-        elif index is 5 : 
-            color.setNamedColor("red")
-        elif index is 6 : 
-            color.setNamedColor("green")
-        elif index is 0 :
-            color.setNamedColor("black")
-            font.setBold(False)
-            font.setUnderline(False)
-            font.setItalic(False)
-            font.setStrikeOut(False)
-        brush = QtGui.QBrush(color)
-        fmt.setFont(font)
-        fmt.setForeground(brush)
-        cursor.setCharFormat(fmt)

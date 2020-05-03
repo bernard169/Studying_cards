@@ -94,10 +94,12 @@ class myStudyDialog(studyDialog):
                     if chapter['name'] == self.__chapter:
                         return course['contentCourse'].index(chapter)
 
-    def getchapterFromIndex(self):
+    def getchapterFromIndex(self, index=None):
+        if index is None:
+            index = self.__indexChapter
         for course in self.__data['courses']:
             if course['name'] == self.__course:
-                return course['contentCourse'][self.__indexChapter]['name']
+                return course['contentCourse'][index]['name']
 
     def getAllQuestionsByIndex(self):
         #[[cours1, chapitre1], [cours1, chapitre2]]
@@ -147,6 +149,9 @@ class myStudyDialog(studyDialog):
                 if card[3] >= self.__pointsRequired :
                     print("card known")
                     self.__unAnsweredQuestions.remove(card)
+                    for infos in self.__neededWork : 
+                        if infos[0] == self.getchapterFromIndex(card[1]) and infos[1] == card[2]:
+                            self.__neededWork.remove(infos)
             if len(self.__unAnsweredQuestions) == 0:
                 msg = QMessageBox()
                 msg.setWindowTitle("Terminer")
