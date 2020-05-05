@@ -29,12 +29,14 @@ class myStudyDialog(studyDialog):
         self.__chapter = None if type(self.__itemsToStudy[0]) is str else self.__itemsToStudy[0][1]
         self.__nOfCoursesToStudy = len([item for item in self.__itemsToStudy if (type(item) is str)])
         lCoursesToStudy = []
+        self.__nOfChaptersToStudy = len([item for item in self.__itemsToStudy if type(item) is not str])
         for item in self.__itemsToStudy :
             if type(item) is not str :
                 if item[0] not in lCoursesToStudy :
                     lCoursesToStudy.append(item[0])
                     self.__nOfCoursesToStudy += 1
-        self.__nOfChaptersToStudy = len([item for item in self.__itemsToStudy if type(item) is not str]) #only chapters have a len 2 entry in this list
+            else : #item is a course
+                self.__nOfChaptersToStudy += self.getNumberOfChapters(item)
         self.__question = ""
         self.__answer = ""
         self.__formatA = []
@@ -82,16 +84,20 @@ class myStudyDialog(studyDialog):
                     count = len(course['contentCourse'][self.__indexChapter]['contentChapter'])
         return count
 
-    def getNumberOfChapters(self):
+    def getNumberOfChapters(self, c=None):
+        if c is None : 
+            c = self.__course
         for course in self.__data['courses']:
-            if course['name'] == self.__course:
+            if course['name'] == c:
                 return len(course['contentCourse'])
 
-    def getIndexOfChapter(self):
+    def getIndexOfChapter(self, c=None):
+        if c is None : 
+            c = self.__chapter
         for course in self.__data['courses']:
             if course['name'] == self.__course:
                 for chapter in course['contentCourse']:
-                    if chapter['name'] == self.__chapter:
+                    if chapter['name'] == c:
                         return course['contentCourse'].index(chapter)
 
     def getchapterFromIndex(self, index=None):
@@ -135,9 +141,9 @@ class myStudyDialog(studyDialog):
             self.viewQuestion()
         elif self.__playbackCounter > self.__spacingMistakes:
             print(self.__neededWork)
-            self.__chapter = self.__neededWork[0][0]
+            self.__chapter = self.__neededWork[0][0] if self.__chapter is not None else None
             self.__index = self.__neededWork[0][1]
-            self.__indexChapter = self.getIndexOfChapter()
+            self.__indexChapter = self.getIndexOfChapter(self.__neededWork[0][0])
             self.__neededWork.pop(0)
             if len(self.__neededWork) > 0:
                 self.__playbackCounter -= (self.__spacingMistakes - 1)
@@ -179,12 +185,13 @@ class myStudyDialog(studyDialog):
                 print(self.__index)
                 self.viewQuestion()
         else:
-            if self.__index < nOfQ - 1:
+            if self.__index < nOfQ - 1 and len(self.__unAnsweredQuestions > 0):
                 self.__index += 1
                 #print(self.__index)
                 self.viewQuestion()
             #go to next chapter 
             elif (self.__index == nOfQ - 1) and (len(self.__neededWork) > 0) : 
+                print("\n1\n")
                 self.__chapter = self.__neededWork[0][0]
                 self.__index = self.__neededWork[0][1]
                 self.__indexChapter = self.getIndexOfChapter() if self.__chapter is not None else self.__indexChapter 
@@ -196,12 +203,15 @@ class myStudyDialog(studyDialog):
                 self.viewQuestion()
             elif (self.__index == nOfQ - 1) and (self.__chapter == None) and (self.__indexChapter < self.getNumberOfChapters() - 1):
                 #end of chapter, whole course selected, not the last chapter
+                print("\n2\n")
                 self.__index = 0
                 self.__indexChapter += 1
+                self.__chaptersDone += 1
                 while self.getNumberOfQuestionsInChapter() == 0 and self.__indexChapter < self.getNumberOfChapters() - 1:
                     self.__indexChapter += 1
                 self.viewQuestion()
             elif (self.__index == nOfQ - 1) and (self.__chapter == None) and (self.__indexChapter == self.getNumberOfChapters()-1) and (self.__coursesDone < self.__nOfCoursesToStudy - 1):
+                print("\n3\n")
                 self.__coursesDone += 1
                 self.__chaptersDone += 1
                 if type(self.__itemsToStudy[self.__chaptersDone]) is str :
@@ -218,6 +228,7 @@ class myStudyDialog(studyDialog):
                     print(self.__indexChapter)
                 self.viewQuestion()
             elif (self.__index == nOfQ - 1) and (self.__chapter is not None) and (self.__chaptersDone < self.__nOfChaptersToStudy - 1):
+                print("\n4\n")
                 self.__chaptersDone += 1
                 self.__course = self.__itemsToStudy[self.__chaptersDone][0]
                 self.__chapter = self.__itemsToStudy[self.__chaptersDone][1]
@@ -230,9 +241,18 @@ class myStudyDialog(studyDialog):
                 msg.setText("Félicitations ! Tu as terminé {}".format("ces chapitres." if self.__chapter is not None else "ce cours."))
                 msg.setIcon(QMessageBox.Information)
                 ex = msg.exec_()
+                self.__dialog.done(0)
             else :
+                print("index :")
+                print(self.__index)
+                print(" nOfQ : ")
+                print(nOfQ)
+                print("chapters done : ")
+                print(self.__chaptersDone)
+                print("number of chapters to study :")
+                print(self.__nOfChaptersToStudy)
                 self.__index = nOfQ 
-                self.displayQA.setPlainText("")
+                self.displayQA.setPlainText("Erreur")
                 self.counterLabel.setText("0/0")
         
 
@@ -310,12 +330,12 @@ class myStudyDialog(studyDialog):
         chapterIndex = -1
         cardIndex = -1
         cardFound = False
-        self.__chapter = self.getchapterFromIndex() if self.__chapter is None else self.__chapter
+        chapt = self.getchapterFromIndex() if self.__chapter is None else self.__chapter
         for course in self.__data['courses']:
             if course['name'] == self.__course : 
                 courseIndex = self.__data['courses'].index(course)
                 for chapter in course['contentCourse']:
-                    if chapter['name'] == self.__chapter:
+                    if chapter['name'] == chapt:
                         chapterIndex = course['contentCourse'].index(chapter)
                         for card in chapter['contentChapter']:
                             if (card['contentCard']['Q'] == self.__question) and (card['contentCard']['A'] == self.__answer) :
@@ -341,9 +361,9 @@ class myStudyDialog(studyDialog):
     
     def needsWork(self):
         #add a function to come back to this question 
-        self.__chapter = self.getchapterFromIndex() if self.__chapter is None else self.__chapter
+        chapt = self.getchapterFromIndex() if self.__chapter is None else self.__chapter
         if not self.__prevQIsWrong :
-            self.__neededWork.append((self.__chapter, self.__index))
+            self.__neededWork.append((chapt, self.__index))
         self.viewAnswerButton.setVisible(True)
         self.validateQButton.setVisible(False)
         self.needWorkButton.setVisible(False)
@@ -400,10 +420,6 @@ class myStudyDialog(studyDialog):
         with open(self.__databaseFile, 'w') as reWriteFile:
             json.dump(db, reWriteFile)
         self.__data = data
-        
-        ####################
-        ### INSERT HERE ####
-        ####################
         self.displayQA.setReadOnly(True)
 
     def cancelChange(self):
