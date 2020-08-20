@@ -1,9 +1,11 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from QtWidgets import QMessageBox
 import explorerMain
+import threading
 
 class MyExplorerMain(explorerMain.Ui_MainWindow):
     def setupUi(self, Dialog, dataTree):
+        threading.stack_size(1228800) #multiple of 4kB
         self.__action = ""
         self.dialog = Dialog
         super().setupUi(Dialog)

@@ -3,9 +3,11 @@ import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 import login_dialog as login
 import utils
+import threading
 
 class MyLoginDialog(login.Ui_Dialog):
     def setupUi(self, Dialog):
+        threading.stack_size(1228800) #multiple of 4kB
         self.userName = ""
         self.dialog = Dialog
         super().setupUi(Dialog)

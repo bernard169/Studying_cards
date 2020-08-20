@@ -4,9 +4,11 @@ import sys
 import json
 import utils
 from addCard import Ui_selectCardType
+import threading
 
 class MyAddCardDialog(Ui_selectCardType):
     def setupUi(self, Dialog, chapter):
+        threading.stack_size(1228800) #multiple of 4kB
         super().setupUi(Dialog)
         self.__dialog = Dialog
         self.__action = ""

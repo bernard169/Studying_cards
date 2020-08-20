@@ -6,9 +6,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from previewCards import Ui_previewCardsDialog
 from myAddStructuralItemDialog import MyAddStructuralItemDialog
 import utils
+import threading
 
 class MyPreviewCards(Ui_previewCardsDialog):
     def setupUi(self, Dialog, data, databaseFile, course, userName, chapter = None):
+        threading.stack_size(1228800) #multiple of 4kB
         super().setupUi(Dialog)
         #self.fullScreenSize = QtWidgets.QDesktopWidget().availableGeometry().size()
         if (userName == "chloé"):

@@ -4,9 +4,11 @@ import sys
 import json
 from createQACard import Ui_createQACardDialog
 import utils
+import threading
 
 class MyCreateQACard(Ui_createQACardDialog):
     def setupUi(self, Dialog, db, course, chapter, userName):
+        threading.stack_size(1228800) #multiple of 4kB
         super().setupUi(Dialog)
         print("\n \n CHAPTER IS", chapter)
         print(chapter=="1 espace")

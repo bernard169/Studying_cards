@@ -1,8 +1,10 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from addStructuralItemDialog import Ui_CreateStructure
+import threading
 
 class MyAddStructuralItemDialog(Ui_CreateStructure):
     def setupUi(self, Dialog):
+        threading.stack_size(1228800) #multiple of 4kB
         super().setupUi(Dialog)
         self.__action = ""
         self.__dialog = Dialog

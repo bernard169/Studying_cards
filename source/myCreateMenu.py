@@ -5,9 +5,11 @@ import json
 import createMenu
 from myAddStructuralItemDialog import MyAddStructuralItemDialog
 import utils
+import threading
 
 class MyCreatePageDialog(createMenu.Ui_createPageDialog):
     def setupUi(self, createPageDialog, dataTree, databaseFile, userName):
+        threading.stack_size(1228800) #multiple of 4kB
         super().setupUi(createPageDialog)
         self.__relPathToDatabase = databaseFile
         self.__userName = userName

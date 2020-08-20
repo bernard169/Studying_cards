@@ -1,6 +1,7 @@
 # This Python file uses the following encoding: utf-8
 import os
 import sys
+import threading
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 import myLogin_dialog as login
@@ -229,6 +230,9 @@ def preview(data, databaseFile, course, userName, database, chapter=None):
             sys.exit(-1)
 
 if __name__ == "__main__":
+    #resource.setrlimit(resource.RLIMIT_STACK, (2**29,-1))
+    #sys.setrecursionlimit(10**6)
+    threading.stack_size(1228800) #multiple of 4kB
     database = ""
     databaseFile = '..' + os.path.sep +'data' + os.path.sep + 'data.json'
     with open(databaseFile, 'r') as  json_file:

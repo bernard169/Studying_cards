@@ -5,9 +5,11 @@ import random
 import json
 import time
 import utils
+import threading
 
 class myStudyDialog(studyDialog):
     def setupUi(self, dialog, username, data, database, databaseFile, itemsToStudy, isRandom, spacingMistakes, minPointsRequired):
+        threading.stack_size(1228800) #multiple of 4kB
         super().setupUi(dialog)
         self.__userName = username
         self.__isRandom = isRandom
@@ -92,12 +94,15 @@ class myStudyDialog(studyDialog):
                 return len(course['contentCourse'])
 
     def getIndexOfChapter(self, c=None):
+        print("get index of chapter :")
         if c is None : 
             c = self.__chapter
+        print(c)
         for course in self.__data['courses']:
             if course['name'] == self.__course:
                 for chapter in course['contentCourse']:
                     if chapter['name'] == c:
+                        print("index found")
                         return course['contentCourse'].index(chapter)
 
     def getchapterFromIndex(self, index=None):
@@ -185,16 +190,16 @@ class myStudyDialog(studyDialog):
                 print(self.__index)
                 self.viewQuestion()
         else:
-            if self.__index < nOfQ - 1 and len(self.__unAnsweredQuestions > 0):
+            if self.__index < nOfQ - 1 and len(self.__unAnsweredQuestions) > 0:
                 self.__index += 1
                 #print(self.__index)
                 self.viewQuestion()
             #go to next chapter 
             elif (self.__index == nOfQ - 1) and (len(self.__neededWork) > 0) : 
                 print("\n1\n")
-                self.__chapter = self.__neededWork[0][0]
+                self.__chapter = self.__neededWork[0][0] if self.__chapter is not None else None
                 self.__index = self.__neededWork[0][1]
-                self.__indexChapter = self.getIndexOfChapter() if self.__chapter is not None else self.__indexChapter 
+                self.__indexChapter = self.getIndexOfChapter(self.__neededWork[0][0])
                 self.__neededWork.pop(0)
                 if len(self.__neededWork) > 0:
                     self.__playbackCounter -= 2
@@ -229,6 +234,9 @@ class myStudyDialog(studyDialog):
                 self.viewQuestion()
             elif (self.__index == nOfQ - 1) and (self.__chapter is not None) and (self.__chaptersDone < self.__nOfChaptersToStudy - 1):
                 print("\n4\n")
+                print(self.__chapter)
+                print(self.__chaptersDone)
+                print(self.__itemsToStudy)
                 self.__chaptersDone += 1
                 self.__course = self.__itemsToStudy[self.__chaptersDone][0]
                 self.__chapter = self.__itemsToStudy[self.__chaptersDone][1]
